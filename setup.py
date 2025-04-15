@@ -7,7 +7,7 @@ setup(
     description="Streamlit UI for LLM chat apps",
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
-    url="https://github.com/DKethan/Wrap4AI/tree/dev-01",
+    url="https://github.com/DKethan/Wrapper4AI/tree/dev-01",
     packages=find_packages(),
     install_requires=["openai", "tiktoken"],
     python_requires='>=3.7',
