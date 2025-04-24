@@ -77,5 +77,5 @@ print(client.chat_with_history(history))
 ## 🧪 Testing
 
 ```bash
-  python -m tests.test_openai_001
+  python -m tests.test_openai_001 # make sure to add your api key in the test file
 ```
