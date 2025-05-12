@@ -2,15 +2,17 @@ from Wrapper4AI.wrap import connect
 
 client = connect("huggingface_inference", "microsoft/Phi-3-mini-4k-instruct", "")
 
-response = client.chat("Tell me a joke.")
-print(response)
+# Get a joke from the model
+joke_response = client.chat("Tell me a joke.")
 
-print("\n---\n")
+# Prepare a prompt for code generation
+user_prompt = "give me a code to create a simple calculator in python"
 
-x = "Who created it?"
-
-history = [
-    {"role": "system", "content": "What is Python?"},
-    {"role": "user", "content": x}
+chat_history = [
+    {"role": "system", "content": "You are a state-of-the-art Python developer. You need to answer the question."},
+    {"role": "user", "content": user_prompt}
 ]
-print(client.chat_with_history(history))
+
+# Get a response using chat history
+code_response = client.chat_with_history(chat_history)
+print(code_response)
