@@ -8,6 +8,7 @@ from .handlers.meta_llama_handler import MetaLlamaHandler
 from .handlers.huggingface_handler import HuggingFaceHandler
 from .handlers.anthropic_handler import AnthropicHandler
 from .handlers.perplexity_ai_handler import PerplexityAIHandler
+from .handlers.hf_inference_handler import HuggingFaceHandler as HuggingFaceInferenceHandler
 
 class GenerativeResponder:
     """
@@ -36,6 +37,8 @@ class GenerativeResponder:
             return MetaLlamaHandler(model)
         elif provider == "huggingface":
             return HuggingFaceHandler(model)
+        elif provider == "huggingface_inference":
+            return HuggingFaceInferenceHandler(model)
         elif provider == "anthropic":
             return AnthropicHandler(model)
         elif provider == "perplexity":

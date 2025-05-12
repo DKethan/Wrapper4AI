@@ -29,7 +29,5 @@ class Client:
     def clear_history(self):
         self.responder.reset_history()
 
-
-
 def connect(provider: str, model: str, api_key: str) -> Client:
     return Client(provider, model, api_key)
