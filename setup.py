@@ -9,6 +9,16 @@ setup(
     long_description_content_type="text/markdown",
     url="https://github.com/DKethan/Wrapper4AI/tree/dev-01",
     packages=find_packages(),
-    install_requires=["openai", "tiktoken"],
+    install_requires=[
+        "openai",
+        "tiktoken",
+        "requests",
+        "huggingface_hub",
+        "boto3",
+        "anthropic",
+        "google-api-python-client",
+        "google-generativeai",
+        "google-ai-generativelanguage"
+    ],
     python_requires='>=3.7',
 )

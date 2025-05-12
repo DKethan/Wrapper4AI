@@ -33,13 +33,14 @@ Or if you package it to PyPI:
 ## 🧩 Supported Providers
 
 - ✅ OpenAI (`gpt-4o`, `gpt-3.5`, ... all OpenAI language models )
-- ✅ Google Gemini -> yet to be released
-- ✅ Amazon Bedrock -> yet to be released
-- ✅ DeepSeek -> yet to be released
-- ✅ Meta LLaMA -> yet to be released
-- ✅ HuggingFace -> yet to be released
-- ✅ Anthropic Claude -> yet to be released
-- ✅ Perplexity AI -> yet to be released
+- ✅ Google Gemini 
+- ✅ Amazon Bedrock 
+- ✅ DeepSeek 
+- ✅ Meta LLaMA 
+- ✅ HuggingFace Interface
+- ✅ Anthropic Claude 
+- ✅ Perplexity AI 
+- ✅ HuggingFace
 
 ---
 
