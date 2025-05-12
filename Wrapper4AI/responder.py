@@ -1,7 +1,6 @@
 from typing import List, Dict, Optional
 from .config import Config
 from .handlers.openai_handler import OpenAIHandler
-from .handlers.gemini_handler import GeminiHandler
 from .handlers.bedrock_handler import BedrockHandler
 from .handlers.deepseek_handler import DeepSeekHandler
 from .handlers.meta_llama_handler import MetaLlamaHandler
@@ -27,8 +26,6 @@ class GenerativeResponder:
 
         if provider == "openai":
             return OpenAIHandler(model)
-        elif provider == "gemini":
-            return GeminiHandler(model)
         elif provider == "deepseek":
             return DeepSeekHandler(model)
         elif provider == "bedrock":

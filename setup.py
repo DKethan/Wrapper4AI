@@ -15,10 +15,7 @@ setup(
         "requests",
         "huggingface_hub",
         "boto3",
-        "anthropic",
-        "google-api-python-client",
-        "google-generativeai",
-        "google-ai-generativelanguage"
+        "anthropic"
     ],
     python_requires='>=3.7',
 )
