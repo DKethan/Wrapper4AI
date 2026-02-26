@@ -1,82 +1,144 @@
 # Wrapper4AI
 
-**Multi-provider, pluggable LLM wrapper with token counting, history management, and seamless extensibility.**
+**Multi-provider, pluggable LLM wrapper with token counting, history management, streaming, and seamless extensibility.**
 
-> 🔧 Designed for developers building chat-based AI tools with OpenAI, Gemini, Bedrock, DeepSeek, Anthropic, and more.
-
----
-
-## 🚀 Features
-
-- 🔌 **Unified interface** for multiple LLM providers
-- 💬 **Chat history tracking** with token trimming
-- 🔢 **Token counting** with Tiktoken for OpenAI models
-- 📚 **Extensible handler base** for adding new models
-- ✅ **Testable client API** with clean abstraction
+Unified Python client for OpenAI, Anthropic, Google Gemini, Mistral AI, DeepSeek, AWS Bedrock, Hugging Face, and Perplexity AI.
 
 ---
 
-## 🛠️ Installation
+## Features
+
+- **Unified interface** for multiple LLM providers
+- **Chat history** with optional tracking and token trimming
+- **Streaming** support for all providers
+- **Token counting** (tiktoken when available)
+- **Provider registry** — register custom backends via `BaseProvider`
+- **Config from env** — API keys and regions from environment variables
+
+---
+
+## Installation
 
 ```bash
-  pip install git+https://github.com/DKethan/Wrap4AI.git
+pip install wrapper4ai
 ```
 
-Or if you package it to PyPI:
+Install with optional dependencies for the providers you use:
 
 ```bash
-  pip install wrapper4AI
+# One provider
+pip install wrapper4ai[openai]
+
+# Multiple
+pip install wrapper4ai[openai,anthropic,google,mistral]
+
+# All providers
+pip install wrapper4ai[all]
 ```
+
+Optional extras: `openai`, `anthropic`, `google`, `mistral`, `bedrock`, `huggingface`, `all`, `dev`.
 
 ---
 
-## 🧩 Supported Providers
+## Supported Providers
 
-- ✅ OpenAI (`gpt-4o`, `gpt-3.5`, ... all OpenAI language models )
-- ✅ Google Gemini 
-- ✅ Amazon Bedrock 
-- ✅ DeepSeek 
-- ✅ Meta LLaMA 
-- ✅ HuggingFace Interface
-- ✅ Anthropic Claude 
-- ✅ Perplexity AI 
-- ✅ HuggingFace
+| Provider     | Default model              | Optional extra |
+|-------------|----------------------------|----------------|
+| OpenAI      | `gpt-4o`                   | `openai`       |
+| Anthropic   | `claude-sonnet-4-20250514`  | `anthropic`    |
+| Google      | `gemini-2.0-flash`         | `google`       |
+| Mistral AI  | `mistral-large-latest`      | `mistral`      |
+| DeepSeek    | `deepseek-chat`            | —              |
+| AWS Bedrock | Claude / Llama / Titan     | `bedrock`      |
+| Hugging Face| `HuggingFaceH4/zephyr-7b-beta` | `huggingface` |
+| Perplexity  | `sonar-pro`                 | —              |
 
 ---
 
-## 🔧 Usage
+## Usage
 
-### 1. Connect to a provider
-
-```python
-from wrapper4AI.wrap import connect
-
-client = connect(provider="openai", model="gpt-4o", api_key="sk-xxx")
-```
-
-### 2. Basic Chat
+### Connect and chat
 
 ```python
+from wrapper4ai import connect
+
+client = connect("openai", "gpt-4o", api_key="sk-...")
 response = client.chat("Tell me a joke.")
 print(response)
 ```
 
-### 3. With History
+API keys can be set via environment variables (e.g. `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, `GOOGLE_API_KEY`, `MISTRAL_API_KEY`) or passed as `api_key=`.
+
+### Streaming
 
 ```python
-history = [
-    {"role": "user", "content": "What is Python?"},
-    {"role": "assistant", "content": "A programming language."},
-    {"role": "user", "content": "Who created it?"}
-]
-print(client.chat_with_history(history))
+client = connect("anthropic", "claude-sonnet-4-20250514")
+for chunk in client.stream("Write a short poem."):
+    print(chunk, end="")
 ```
 
+### With history
+
+History is kept by default; you can clear it or turn it off per call:
+
+```python
+client = connect("openai", "gpt-4o")
+client.chat("My name is Alex.")
+client.chat("What is my name?")  # uses history
+client.chat("Hello!", use_history=False)  # no history update
+client.clear_history()
+```
+
+### Stateless completion
+
+```python
+messages = [
+    {"role": "user", "content": "What is 2+2?"},
+]
+reply = client.complete(messages)  # does not change client history
+```
+
+### System prompt and token counting
+
+```python
+client = connect("openai", "gpt-4o", system_prompt="You are a helpful assistant.")
+client.chat("Hi!")
+n = client.count_tokens("Some text")
+n = client.count_tokens(client.history)
+total = client.total_tokens_used
+title = client.generate_title("A long discussion about AI")
+```
+
+### List providers and custom backends
+
+```python
+from wrapper4ai import list_providers, connect
+from wrapper4ai.providers import BaseProvider, register_provider
+
+print(list_providers())  # ['anthropic', 'bedrock', 'deepseek', 'google', ...]
+
+class MyProvider(BaseProvider):
+    def generate(self, messages): ...
+    def stream(self, messages): ...
+    def count_tokens(self, messages): ...
+
+register_provider("my_backend", MyProvider)
+client = connect("my_backend", "my-model")
+```
 
 ---
 
-## 🧪 Testing
+## Testing
 
 ```bash
-  python -m tests.test_openai_001 # make sure to add your api key in the test file
+pip install -e ".[dev]"
+PYTHONPATH=. pytest tests/ -v
 ```
+
+Tests use a mock provider; no API keys required for the test suite.
+
+---
+
+## License
+
+MIT.
