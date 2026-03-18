@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "wrapper4ai"
-version = "1.0.0"
+version = "1.0.1"
 description = "A unified, production-ready Python client for OpenAI, Anthropic, Google Gemini, Mistral AI, DeepSeek, AWS Bedrock, HuggingFace, and Perplexity AI."
 readme = "README.md"
 license = {text = "MIT"}
